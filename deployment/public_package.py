@@ -12,7 +12,7 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE_NAME = "futurepath-public-synthetic.zip"
+PACKAGE_NAME = "futurepath-public-prototype-synthetic-v1.zip"
 MANIFEST_NAME = "PUBLIC_PACKAGE_MANIFEST.json"
 SCHEMA = "futurepath-public-synthetic-package-v1"
 MEMBERS = (
@@ -29,12 +29,14 @@ MEMBERS = (
     "fixtures/synthetic_profiles.py",
     "fixtures/synthetic_requirements.json",
     "fixtures/synthetic_requirements.py",
-    "requirements.txt",
+    "requirements-public.lock",
     "services/__init__.py",
     "services/matching.py",
     "services/profile_intake.py",
+    "services/synthetic_journey.py",
     "ui/__init__.py",
     "ui/skills_intake.py",
+    "ui/synthetic_journey.py",
     "ui/synthetic_matching.py",
 )
 MAX_MEMBER_BYTES = 2_000_000
@@ -42,7 +44,7 @@ MAX_PACKAGE_BYTES = 10_000_000
 FORBIDDEN_PATHS = (
     "data", "review_app.py", "ingestion", "storage", "tests",
     "ui/review_data.py", "ui/occupation_browser.py", ".env",
-    ".streamlit/secrets.toml",
+    ".streamlit/secrets.toml", "requirements.txt",
 )
 
 
@@ -83,6 +85,8 @@ def build_package(root: Path = ROOT, output: Path | None = None) -> tuple[Path, 
     """Create byte-identical ZIPs for byte-identical allowlisted source files."""
     output = output or root / "dist" / PACKAGE_NAME
     source = {name: _source_bytes(root, name) for name in MEMBERS}
+    if source["requirements-public.lock"] != _source_bytes(root, "requirements.txt"):
+        raise PackageError("public runtime lock differs from local requirements")
     manifest = {
         "schema": SCHEMA,
         "members": [

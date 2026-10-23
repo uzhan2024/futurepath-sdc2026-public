@@ -9,7 +9,7 @@
 | scikit-learn | 1.9.1 | BSD-3-Clause | https://github.com/scikit-learn/scikit-learn；仅兼容性加载，无产品推理 |
 | pytest | 9.1.1 | MIT | https://github.com/pytest-dev/pytest；仅开发测试 |
 
-requirements.txt 固定运行依赖及传递依赖；requirements-dev.txt 固定额外开发依赖。传递包各自的 LICENSE/NOTICE 随其安装分发包保留；本仓库不复制第三方 wheel 或虚拟环境。未来打包或再分发第三方代码时，须一并核对并保留相应完整声明，不能只依赖此摘要。
+requirements.txt 固定本地运行依赖及传递依赖；requirements-public.lock 与其字节相同，仅供净化公开包的隔离 Build 安装；requirements-dev.txt 固定额外开发依赖。传递包各自的 LICENSE/NOTICE 随其安装分发包保留；本仓库不复制第三方 wheel 或虚拟环境。未来打包或再分发第三方代码时，须一并核对并保留相应完整声明，不能只依赖此摘要。
 
 以上依赖记录来自 TSK-00A，当时没有引入外部数据集。TSK-02 的数据许可与署名追加如下；该阶段没有引入 OpenAlex 数据。仓库后来保存了待审 OpenAlex snapshot 元数据，但 Step 27.2 public synthetic ZIP 不包含 `data/` 下的 O*NET、OpenAlex 或 review-only bundle。下述 O*NET 署名仍用于仓库内的待审资料，不表示公共演示使用或发布了这些记录。
 

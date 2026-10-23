@@ -6,7 +6,7 @@ from pathlib import Path
 
 import streamlit as st
 
-APP_VERSION = "0.2.0-step26-public-synthetic"
+APP_VERSION = "0.3.0-synthetic-journey"
 PUBLIC_FAILURE_MESSAGE = "合成演示暂时不可用。请稍后重试。"
 
 
@@ -15,6 +15,9 @@ def render_public_app() -> None:
     from fixtures.synthetic_requirements import load_requirement_bundle
     from ui.skills_intake import render_skills_intake
     from ui.synthetic_matching import render_synthetic_matching
+    from ui.synthetic_journey import (
+        render_career_comparison, render_disclosures, render_learning_path,
+    )
 
     source_id = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()[:12]
     st.set_page_config(
@@ -28,22 +31,32 @@ def render_public_app() -> None:
     st.caption("可解释的技能探索 · 交互式合成演示")
     st.warning("Synthetic Demonstration — Not Real Career Advice", icon="⚠️")
     st.write(
-        "选择一个完全虚构的学习者档案，调整技能状态，观察技能覆盖与资料完整度如何改变。"
-        "所有要求均为团队编写的虚构示例。"
+        "选择合成档案、编辑技能状态、对照三条虚构路线，再为已确认缺口选择练习。"
+        "所有要求和练习均为团队编写的演示示例。"
     )
 
     st.subheader("本演示提供什么")
     st.markdown(
-        "- **已实现：** 三份合成档案、四态技能输入、三组虚构技能要求及可解释的合成覆盖结果。\n"
-        "- **尚未实现：** 经审核的真实职业要求、职业建议、课程与价格、研究趋势、就业预测和 SDG 影响。"
+        "- **已实现：** 三份合成档案、四态技能输入、虚构要求匹配、职业对照和自选练习路线。\n"
+        "- **尚未提供：** 经审核的真实职业要求、核实课程与价格、研究趋势计分、就业预测和 SDG 影响。"
     )
     st.caption("未知与未报告都不等于缺少技能；只有“已确认不具备”会作为确认缺口显示。")
     st.divider()
 
     profiles = load_profile_bundle()
     requirements = load_requirement_bundle()
-    selected_profile = render_skills_intake(st, profiles)
-    render_synthetic_matching(st, selected_profile, profiles, requirements)
+    profile_tab, roles_tab, path_tab, evidence_tab = st.tabs(
+        ["1 · 合成档案", "2 · 匹配与比较", "3 · 学习下一步", "4 · 依据与限制"]
+    )
+    with profile_tab:
+        selected_profile = render_skills_intake(st, profiles)
+    with roles_tab:
+        run = render_synthetic_matching(st, selected_profile, profiles, requirements)
+        render_career_comparison(st, run, profiles)
+    with path_tab:
+        render_learning_path(st, selected_profile, run, profiles)
+    with evidence_tab:
+        render_disclosures(st, profiles, requirements, run)
 
     st.divider()
     with st.expander("运行状态、版本与健康检查"):
