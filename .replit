@@ -8,8 +8,8 @@ externalPort = 80
 
 [deployment]
 deploymentTarget = "cloudrun"
-build = ["sh", "-c", "python deployment/public_package.py verify-root && python -m venv .venv && PIP_USER=false .venv/bin/python -m pip install -r requirements.txt"]
-run = [".venv/bin/python", "-m", "streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=5000", "--server.headless=true"]
+build = ["sh", "-c", "python deployment/public_package.py verify-root && python -m venv .venv && env -u PIP_TARGET -u PIP_USER -u PYTHONUSERBASE -u PYTHONPATH PIP_CONFIG_FILE=/dev/null .venv/bin/python -m pip install --no-user -r requirements.txt"]
+run = ["sh", "-c", "env -u PYTHONPATH -u PYTHONUSERBASE .venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"]
 
 [nix]
 channel = "stable-25_05"
