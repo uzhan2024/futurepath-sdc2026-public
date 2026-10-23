@@ -1,0 +1,39 @@
+entrypoint = "app.py"
+run = "python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
+modules = ["python-3.12"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[deployment]
+deploymentTarget = "cloudrun"
+build = ["sh", "-c", "python deployment/public_package.py verify-root && python -m venv .venv && PIP_USER=false .venv/bin/python -m pip install -r requirements.txt"]
+run = [".venv/bin/python", "-m", "streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=5000", "--server.headless=true"]
+
+[nix]
+channel = "stable-25_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
