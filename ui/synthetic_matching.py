@@ -5,7 +5,7 @@ from dataclasses import replace
 from domain.models import SkillId, SkillState, SyntheticProfile, UserSkill
 from fixtures.synthetic_profiles import SyntheticProfileBundle
 from fixtures.synthetic_requirements import FictionalRequirementBundle
-from services.matching import MatchResult, SyntheticMatchingRun, match_synthetic_profile
+from services.matching import MatchResult, SyntheticMatchingRun, match_synthetic_profile, match_confirmed_profile
 
 
 def profile_with_session_states(session_state: dict, profile: SyntheticProfile) -> SyntheticProfile:
@@ -20,7 +20,8 @@ def profile_with_session_states(session_state: dict, profile: SyntheticProfile) 
 def calculate_synthetic_matching(session_state: dict, profile: SyntheticProfile,
                                  requirements: FictionalRequirementBundle) -> SyntheticMatchingRun:
     """Calculate results from the active browser session's skill states."""
-    return match_synthetic_profile(profile_with_session_states(session_state, profile), requirements)
+    current = profile_with_session_states(session_state, profile)
+    return (match_synthetic_profile if current.synthetic else match_confirmed_profile)(current, requirements)
 
 
 def _format_skills(skill_ids, labels_by_id: dict[SkillId, str]) -> str:

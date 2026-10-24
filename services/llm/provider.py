@@ -13,6 +13,7 @@ class LLMCompletionRequest:
     user_prompt: str
     max_output_tokens: int
     reasoning_effort: str = "low"
+    response_schema: dict | None = None
 
 
 @dataclass(frozen=True)
@@ -27,6 +28,7 @@ class LLMCompletionResponse:
     content: str
     usage: LLMUsage | None
     model: str
+    latency_ms: float | None = None
 
 
 class LLMProvider(Protocol):

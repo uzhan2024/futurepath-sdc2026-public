@@ -115,3 +115,19 @@ def match_synthetic_profile(profile: SyntheticProfile,
     return SyntheticMatchingRun(profile.profile_id, profile.fixture_version,
                                 requirements.fixture_version, requirements.content_sha256,
                                 fingerprint, ranked, unranked)
+
+
+def match_confirmed_profile(profile, requirements):
+    """Apply the existing arithmetic to confirmed user states and fictional requirements."""
+    from domain.career_profile import ConfirmedCareerProfile
+    if type(profile) is not ConfirmedCareerProfile:
+        raise TypeError('A confirmed career profile is required')
+    profile.__post_init__()
+    validate_requirement_bundle(requirements)
+    fingerprint = hashlib.sha256(canonical_json({'states': [asdict(s) for s in profile.skills],
+        'requirements': requirements.content_sha256, 'rule': RULE_VERSION, 'source': profile.source})).hexdigest()
+    results = tuple(_assess_role(profile, role) for role in requirements.occupations)
+    ranked = tuple(sorted((r for r in results if r.score is not None), key=lambda r: (-r.score, _identity_key(r.occupation_id))))
+    unranked = tuple(sorted((r for r in results if r.score is None), key=lambda r: _identity_key(r.occupation_id)))
+    return SyntheticMatchingRun(profile.profile_id, profile.fixture_version, requirements.fixture_version,
+                                requirements.content_sha256, fingerprint, ranked, unranked)

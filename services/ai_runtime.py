@@ -19,6 +19,7 @@ from services.llm.provider import (
     LLMCompletionResponse,
     LLMProvider,
     ProviderFailure,
+    ProviderConfigurationError,
 )
 from services.llm.runpod_glm import MAX_INPUT_BYTES, MAX_OUTPUT_TOKENS, RUNPOD_MODEL, SUPPORTED_REASONING_EFFORTS, RunPodGLMProvider
 
@@ -36,6 +37,7 @@ class AIGatewayResult:
     model: str
     request_id: str
     estimated_cost_usd: Decimal
+    latency_ms: float | None = None
 
 
 class AIGatewayFailure(RuntimeError):
@@ -50,13 +52,47 @@ def _enabled_flag() -> bool:
     return os.getenv("FUTUREPATH_AI_ENABLED", "false").strip().casefold() == "true"
 
 
+def public_mode() -> bool:
+    return os.getenv('FUTUREPATH_DEPLOYMENT_MODE', 'local').casefold() == 'public' or bool(os.getenv('REPL_ID') or os.getenv('REPLIT_DEPLOYMENT'))
+
+
+def provider_choice() -> str:
+    return os.getenv('FUTUREPATH_AI_PROVIDER', 'disabled' if public_mode() else 'ollama').strip().casefold()
+
+
+def create_gateway(*, test_provider=None):
+    choice = provider_choice()
+    if choice == 'ollama' and not public_mode():
+        from services.local_ai import LocalAIGateway
+        try:
+            return LocalAIGateway()
+        except ProviderConfigurationError:
+            raise AIGatewayFailure('provider_configuration_unavailable') from None
+    if choice == 'mock' and test_provider is not None and not public_mode():
+        from services.local_ai import LocalAIGateway
+        return LocalAIGateway(test_provider)
+    if choice == 'runpod':
+        return AIGateway.from_environment()
+    raise AIGatewayFailure('disabled')
+
+
 def _reasoning_effort() -> str:
     return os.getenv("FUTUREPATH_AI_REASONING_EFFORT", "low").strip().casefold()
 
 
 def ai_availability() -> AIAvailability:
     """Inspect safe configuration presence without contacting providers or Redis."""
-    if not _enabled_flag():
+    choice = provider_choice()
+    if choice == 'ollama':
+        if public_mode():
+            return AIAvailability(False, 'local_provider_blocked')
+        try:
+            from services.llm.ollama import local_url
+            local_url(os.getenv('FUTUREPATH_OLLAMA_URL', 'http://127.0.0.1:11434'))
+        except (ValueError, ProviderConfigurationError):
+            return AIAvailability(False, 'invalid_limit_configuration')
+        return AIAvailability(True, 'local_configured')
+    if choice != 'runpod' or not _enabled_flag():
         return AIAvailability(False, "disabled")
     if not os.getenv("RUNPOD_API_KEY", "").strip():
         return AIAvailability(False, "missing_provider_key")

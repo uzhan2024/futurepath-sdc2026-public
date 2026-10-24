@@ -14,11 +14,17 @@ STATE_LABELS = {
 
 def render_skills_intake(st, bundle) -> SyntheticProfile:
     st.subheader("Your profile")
-    st.caption("Choose a fictional profile or adjust its skill states. Changes stay in this browser session.")
+    st.caption("Choose a sample or My profile, then report your skill states. Changes stay in this browser session.")
     profiles = bundle.profiles
     labels = {f"Sample profile {index + 1}": profile for index, profile in enumerate(profiles)}
+    from domain.career_profile import ConfirmedCareerProfile
+    from domain.models import UserSkill
+    st.session_state.setdefault('career_user_profile', ConfirmedCareerProfile(tuple(UserSkill(identity) for identity, _ in bundle.supported_skills)))
+    labels['My profile'] = st.session_state.career_user_profile
     selected_label = st.selectbox("Select a sample profile", list(labels), key="intake_profile_choice")
     profile = labels[selected_label]
+    if not profile.synthetic:
+        st.info('These are your confirmed skill states, compared against fictional occupation requirements. Resume suggestions do not enter this profile automatically.')
     states = ensure_profile_state(st.session_state, profile)
     widget_keys = {skill.skill_id.skill_code: f"skill_state_{profile.profile_id}_{skill.skill_id.skill_code}"
                    for skill in profile.skills}

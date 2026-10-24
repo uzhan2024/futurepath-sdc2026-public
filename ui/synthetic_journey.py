@@ -87,7 +87,7 @@ def render_disclosures(st, profiles: SyntheticProfileBundle,
                        run: SyntheticMatchingRun) -> None:
     st.subheader("Data, privacy, and limitations")
     st.markdown(
-        "- **Profiles and skills:** Fictional sample profiles. No CV upload is available.\n"
+        "- **Profiles and skills:** Fictional samples or your explicitly confirmed skill states. Optional local-only resume drafts require review. Public uploads are disabled.\n"
         "- **Career requirements:** Team-authored fictional demonstration data, separate from any pending occupation dataset.\n"
         "- **Matching:** Equal-weight skill coverage is shown only when all requirement states are known. A score is not a probability or employment prediction.\n"
         "- **Learning:** Practice ideas are illustrative. No verified courses, prices, credentials, or completion dates are provided.\n"

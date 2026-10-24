@@ -14,11 +14,15 @@ from services.ai_guidance import (
     generate_skill_gap_coaching,
     parse_monthly_budget,
 )
-from services.ai_runtime import AIGateway, AIGatewayFailure, ai_availability, new_session_id
+from services.ai_runtime import AIGateway, AIGatewayFailure, ai_availability, new_session_id, create_gateway, provider_choice, public_mode
 
 
 PUBLIC_FAILURE_MESSAGE = "The synthetic demonstration is temporarily unavailable. Please try again shortly."
 FRIENDLY_AI_ERRORS = {
+    'missing_model': 'The configured local model is not available. Check Ollama or continue with the offline tools.',
+    'local_provider_blocked': 'Local AI is unavailable in this public deployment. Offline tools remain available.',
+    'request_size_limit': 'This request exceeds the local context limit. Shorten the question or clear earlier chat.',
+    'local_provider_required': 'Resume extraction requires the local Ollama provider.',
     "disabled": "AI assistance is disabled for this deployment. The deterministic career tools remain available.",
     "missing_provider_key": "AI assistance is not configured for this deployment.",
     "shared_tls_budget_store_required": "AI assistance is unavailable because shared usage protection is not configured.",
@@ -43,7 +47,7 @@ FRIENDLY_AI_ERRORS = {
 
 @st.cache_resource(show_spinner=False)
 def _gateway() -> AIGateway:
-    return AIGateway.from_environment()
+    return create_gateway()
 
 
 def _safe_gateway() -> AIGateway:
@@ -60,15 +64,15 @@ def _show_ai_error(error: Exception) -> None:
 
 def _consent_control(availability) -> bool:
     st.subheader("Optional AI assistance")
-    st.caption(
-        "AI sends your selected synthetic skill states, the fictional career requirements, and the question or learning preferences you enter to RunPod. "
-        "It does not send a name, contact details, uploaded CV, or the profile fixture identifier. Do not enter personal or sensitive information."
-    )
+    local = provider_choice() == 'ollama' and not public_mode()
+    st.caption(('Local Ollama processes your selected skill states and question on this computer. ' if local else
+        'Optional cloud AI sends only selected skill states, fictional requirements and your question to RunPod. ')
+        + 'Do not enter personal or sensitive information. Resume text is never sent through the cloud advice route.')
     if not availability.configured:
         st.info(FRIENDLY_AI_ERRORS.get(availability.reason, "AI assistance is disabled for this deployment."))
         return False
     return st.checkbox(
-        "I agree to send this synthetic career context to the AI provider for this session.",
+        "I agree to process this career context with the configured AI provider for this session.",
         key="ai_consent",
         help="This choice applies only to the current browser session and can be turned off at any time.",
     )
@@ -211,7 +215,7 @@ def _render_learning(run, selected_profile, profiles, consented: bool) -> str | 
 
 def _render_chat(run, profiles, consented: bool) -> None:
     st.subheader("Career chat")
-    st.caption("Chat is limited to this browser session and the selected synthetic profile. Up to six recent turns are sent with each question.")
+    st.caption("Chat stays in this session. Only the latest pair of messages and your selected skill context are sent with each question.")
     results = run.ranked_results + run.unranked_results
     if not results:
         st.info("Complete your profile to start a grounded career conversation.")
@@ -240,7 +244,7 @@ def _render_chat(run, profiles, consented: bool) -> None:
             with st.spinner("Thinking…"):
                 answer = generate_career_chat(
                     _safe_gateway(), st.session_state.current_synthetic_profile, by_code[selected],
-                    dict(profiles.supported_skills), question, tuple(history[-6:]),
+                    dict(profiles.supported_skills), question, tuple(history[-2:]),
                     session_id=_current_session_id(), consented=consented,
                     comparison=by_code[compare_code] if compare_code is not None else None,
                 )
@@ -279,37 +283,66 @@ def render_public_app() -> None:
     from ui.synthetic_matching import calculate_synthetic_matching, profile_with_session_states, render_synthetic_matching
     from ui.synthetic_journey import render_career_comparison, render_disclosures, render_learning_path
 
-    st.set_page_config(page_title="FuturePath Intelligence", page_icon="🧭", layout="wide", initial_sidebar_state="collapsed")
+    from ui.design import apply_design, dashboard
+    from ui.resume_import import render_resume_import
+    st.set_page_config(page_title="FuturePath Intelligence", page_icon="🧭", layout="wide", initial_sidebar_state="auto")
+    apply_design(st)
     _current_session_id()
     st.title("FuturePath Intelligence")
-    st.caption("Explore fictional career paths with transparent, skills-based guidance.")
+    st.caption("YOUR SKILLS. YOUR CHOICES. A CLEARER NEXT STEP.")
     st.warning("Synthetic demonstration only. Career paths and skill requirements are fictional and are not real career advice.", icon="⚠️")
-    st.write("Explore your profile, compare fictional careers, review practice ideas, and optionally ask for AI-generated explanations.")
+    st.write("Understand your strengths, explore the gaps, and build a learning plan you can act on.")
 
     profiles = load_profile_bundle()
     requirements = load_requirement_bundle()
-    consented = _consent_control(ai_availability())
-    tabs = st.tabs(["Profile", "Career matches", "Learning plan", "AI career chat", "Data and privacy"])
-    with tabs[0]:
+    with st.sidebar:
+        st.markdown('### FuturePath')
+        st.caption('Career exploration with transparent skill evidence.')
+        st.write('**Your workspace**')
+        st.write('Confirm your profile → explore matches → plan your practice.')
+        with st.expander('AI assistance'):
+            consented = _consent_control(ai_availability())
+    tabs = st.tabs(['Dashboard', 'My Career Profile', 'Import Resume', 'Career Matches', 'Skill Gaps',
+                    'Career Comparison', 'Learning Roadmap', 'AI Career Advisor', 'Career Chat'], key='product_tab', on_change='rerun')
+    with tabs[1]:
         selected_profile = render_skills_intake(st, profiles)
     st.session_state.current_synthetic_profile = profile_with_session_states(st.session_state, selected_profile)
     run = calculate_synthetic_matching(st.session_state, selected_profile, requirements)
-    with tabs[1]:
-        render_synthetic_matching(st, selected_profile, profiles, requirements, run=run)
-        render_career_comparison(st, run, profiles)
-        _render_ai_advisor(run, profiles, consented)
-        _render_skill_coach(run, profiles, consented)
+    with tabs[0]:
+        dashboard(st, run)
+        def start_profile():
+            st.session_state.intake_profile_choice = 'My profile'
+            st.session_state.product_tab = 'My Career Profile'
+        st.button('Create my career profile', type='primary', key='start_my_profile', on_click=start_profile)
     with tabs[2]:
+        render_resume_import(st, profiles, _safe_gateway, _current_session_id())
+    with tabs[3]:
+        render_synthetic_matching(st, selected_profile, profiles, requirements, run=run)
+    with tabs[4]:
+        st.subheader('Understand your confirmed gaps')
+        st.caption('Unknown and unreported skills need review. They are never silently counted as missing.')
+        for result in run.ranked_results + run.unranked_results:
+            with st.container(border=True):
+                st.markdown('**' + result.title + '**')
+                labels = dict(profiles.supported_skills)
+                st.write('Confirmed gaps: ' + (', '.join(labels[s] for s in result.confirmed_gaps) or 'None reported'))
+                st.caption('Needs review: ' + (', '.join(labels[s] for s in result.unknown_skills + result.not_reported_skills) or 'No unresolved requirement states'))
+        _render_skill_coach(run, profiles, consented)
+    with tabs[5]:
+        render_career_comparison(st, run, profiles)
+    with tabs[7]:
+        _render_ai_advisor(run, profiles, consented)
+    with tabs[6]:
         selected_role = _render_learning(run, selected_profile, profiles, consented)
         if selected_role is not None:
             render_learning_path(st, st.session_state.current_synthetic_profile, run, profiles,
                                  role_code=selected_role)
-    with tabs[3]:
+    with tabs[8]:
         _render_chat(run, profiles, consented)
-    with tabs[4]:
+    with st.sidebar.expander('Data, privacy and AI limits'):
         render_disclosures(st, profiles, requirements, run)
         st.markdown("**Privacy**")
-        st.write("Profile edits and chat history stay in this browser session. No profile file or CV upload is created. AI sharing is optional and requires a separate session consent.")
+        st.write("Profile edits, local resume suggestions and chat stay in this browser session. No application profile/resume file is created. Clear the imported draft when finished. Hosting/upload buffers may remain until session cleanup; memory erasure is not guaranteed.")
         st.write("**AI limits**")
         st.write("AI text is generated advice based on fictional demonstration inputs. It is not verified labour-market data, a hiring forecast, or a substitute for independent research.")
         st.write("**When AI is unavailable**")

@@ -1,5 +1,5 @@
 # Runtime lock: verified locally on Windows / Python 3.11.9 and 3.12.2; Replit/Linux remains unverified.
-# Direct dependencies: streamlit, requests, scikit-learn, openai, redis. Remaining pins are transitive.
+# Direct dependencies: streamlit, requests, scikit-learn, openai, redis, pypdf, defusedxml. Remaining pins are transitive.
 altair==6.3.0
 annotated-types==0.8.0
 anyio==4.15.1
@@ -10,6 +10,7 @@ click==8.5.0
 cloudpickle==3.1.2
 colorama==0.4.6
 distro==1.9.0
+defusedxml==0.7.1
 h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
@@ -32,6 +33,7 @@ pyarrow==26.0.0
 pydantic==2.14.1
 pydantic_core==2.50.1
 pydeck==0.9.3
+pypdf==6.21.2
 python-dateutil==3.0.0
 python-multipart==0.0.32
 referencing==0.37.0

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import stat
 import sys
@@ -12,9 +13,9 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE_NAME = "futurepath-intelligence-ai-v2-rc4.zip"
-MANIFEST_NAME = "FUTUREPATH_AI_V2_RC4_MANIFEST.json"
-SCHEMA = "futurepath-intelligence-ai-v2-rc4"
+PACKAGE_NAME = "futurepath-intelligence-v3-rc1.zip"
+MANIFEST_NAME = "FUTUREPATH_V3_RC1_MANIFEST.json"
+SCHEMA = "futurepath-intelligence-v3-rc1"
 MEMBERS = (
     ".replit",
     ".streamlit/config.toml",
@@ -27,6 +28,7 @@ MEMBERS = (
     "deployment/public_package.py",
     "domain/__init__.py",
     "domain/models.py",
+    "domain/career_profile.py",
     "fixtures/__init__.py",
     "fixtures/synthetic_profiles.json",
     "fixtures/synthetic_profiles.py",
@@ -37,16 +39,24 @@ MEMBERS = (
     "services/ai_budget.py",
     "services/ai_guidance.py",
     "services/ai_runtime.py",
+    "services/local_ai.py",
+    "services/resume_parsing.py",
+    "services/resume_profile.py",
     "services/matching.py",
     "services/profile_intake.py",
     "services/synthetic_journey.py",
     "services/llm/__init__.py",
     "services/llm/provider.py",
     "services/llm/runpod_glm.py",
+    "services/llm/ollama.py",
+    "services/llm/schema.py",
+    "services/llm/mock.py",
     "ui/__init__.py",
     "ui/skills_intake.py",
     "ui/synthetic_journey.py",
     "ui/synthetic_matching.py",
+    "ui/design.py",
+    "ui/resume_import.py",
 )
 MAX_MEMBER_BYTES = 2_000_000
 MAX_PACKAGE_BYTES = 10_000_000
@@ -156,6 +166,24 @@ def verify_root(root: Path = ROOT) -> dict:
     for forbidden in FORBIDDEN_PATHS:
         if (root / forbidden).exists() or (root / forbidden).is_symlink():
             raise PackageError(f"forbidden public project path: {forbidden}")
+    actual = set()
+    expected_dirs = {p.as_posix() for name in MEMBERS for p in Path(name).parents if p.as_posix() != '.'}
+    for directory, children, files in os.walk(root):
+        kept = []
+        for name in children:
+            path = Path(directory) / name
+            if name == '__pycache__' or (Path(directory) == root and name in {'.git', '.venv'}):
+                continue
+            if path.is_symlink() or path.relative_to(root).as_posix() not in expected_dirs:
+                raise PackageError('public project contains an unsafe or extra source directory')
+            kept.append(name)
+        children[:] = kept
+        for name in files:
+            if Path(directory) == root and name == '.git':
+                continue
+            actual.add((Path(directory) / name).relative_to(root).as_posix())
+    if actual != set(MEMBERS) | {MANIFEST_NAME}:
+        raise PackageError('public project contains extra or missing source files')
     expected = {
         "schema": SCHEMA,
         "members": [

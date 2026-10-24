@@ -8,6 +8,7 @@ charset-normalizer,3.5.2,False,HTTP character decoding,MIT,attributions/charset-
 click,8.5.0,False,Command-line support,BSD-3-Clause,attributions/click/click-8.5.0.dist-info/licenses/LICENSE.txt
 cloudpickle,3.1.2,False,Object serialization support,BSD-3-Clause,attributions/cloudpickle/cloudpickle-3.1.2.dist-info/licenses/LICENSE
 colorama,0.4.6,False,Terminal color compatibility,BSD-3-Clause,attributions/colorama/colorama-0.4.6.dist-info/licenses/LICENSE.txt
+defusedxml,0.7.1,True,Entity-safe DOCX XML parsing,PSF-2.0,attributions/defusedxml/defusedxml-0.7.1.dist-info/LICENSE
 distro,1.9.0,False,Platform detection,Apache-2.0,attributions/distro/distro-1.9.0.dist-info/LICENSE
 h11,0.16.0,False,HTTP protocol support,MIT,attributions/h11/h11-0.16.0.dist-info/licenses/LICENSE.txt
 httpcore,1.0.9,False,HTTP transport,BSD-3-Clause,attributions/httpcore/httpcore-1.0.9.dist-info/licenses/LICENSE.md
@@ -31,11 +32,12 @@ pyarrow,26.0.0,False,Data serialization,Apache-2.0,attributions/pyarrow/pyarrow-
 pydantic,2.14.1,False,SDK data validation,MIT,attributions/pydantic/pydantic-2.14.1.dist-info/licenses/LICENSE
 pydantic_core,2.50.1,False,Validation engine,MIT,attributions/pydantic-core/pydantic_core-2.50.1.dist-info/licenses/LICENSE
 pydeck,0.9.3,False,Streamlit visualization dependency,Apache-2.0,attributions/pydeck/pydeck-0.9.3.dist-info/licenses/LICENSE.txt
+pypdf,6.21.2,True,Bounded PDF text extraction in an isolated worker,BSD-3-Clause,attributions/pypdf/pypdf-6.21.2.dist-info/licenses/LICENSE
 python-dateutil,3.0.0,False,Date handling,Apache-2.0 / BSD-3-Clause; scope per shipped LICENSE,attributions/python-dateutil/python_dateutil-3.0.0.dist-info/licenses/LICENSE
 python-multipart,0.0.32,False,Streamlit request support,Apache-2.0,attributions/python-multipart/python_multipart-0.0.32.dist-info/licenses/LICENSE.txt
+redis,6.4.0,True,TLS shared AI usage guard client; real service unverified,MIT,attributions/redis/redis-6.4.0.dist-info/licenses/LICENSE
 referencing,0.37.0,False,Schema references,MIT,attributions/referencing/referencing-0.37.0.dist-info/licenses/COPYING
 requests,2.34.2,True,Locked architecture dependency; no public data refresh,Apache-2.0,attributions/requests/requests-2.34.2.dist-info/licenses/LICENSE; attributions/requests/requests-2.34.2.dist-info/licenses/NOTICE
-redis,6.4.0,True,TLS shared AI usage guard client; real service unverified,MIT,attributions/redis/redis-6.4.0.dist-info/licenses/LICENSE
 rpds-py,2026.9.1,False,Schema data structures,MIT,attributions/rpds-py/rpds_py-2026.9.1.dist-info/licenses/LICENSE
 scikit-learn,1.9.1,True,Locked architecture dependency; not the scoring engine,BSD-3-Clause,attributions/scikit-learn/scikit_learn-1.9.1.dist-info/licenses/COPYING; attributions/scikit-learn/sklearn/externals/array_api_compat/LICENSE; attributions/scikit-learn/sklearn/externals/array_api_extra/LICENSE; attributions/scikit-learn/sklearn/svm/src/liblinear/COPYRIGHT
 scipy,1.17.1,False,Scientific dependency support,BSD-3-Clause; bundled terms retained,attributions/scipy/scipy-1.17.1.dist-info/LICENSE.txt; attributions/scipy/scipy/_lib/_uarray/LICENSE; attributions/scipy/scipy/fft/_pocketfft/LICENSE.md; attributions/scipy/scipy/integrate/LICENSE_DOP; attributions/scipy/scipy/spatial/qhull_src/COPYING_QHULL.txt

@@ -1,2 +1,15 @@
 [browser]
 gatherUsageStats = false
+
+[server]
+maxUploadSize = 2
+
+[theme]
+primaryColor = "#087E8B"
+backgroundColor = "#F5F8FC"
+secondaryBackgroundColor = "#EAF2F7"
+textColor = "#152B46"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"

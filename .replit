@@ -1,5 +1,5 @@
 entrypoint = "app.py"
-run = ".venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
+run = "env FUTUREPATH_DEPLOYMENT_MODE=public FUTUREPATH_AI_PROVIDER=disabled FUTUREPATH_CV_ENABLED=false .venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
 modules = ["python-3.12"]
 
 [[ports]]
@@ -12,7 +12,7 @@ enabledForHosting = false
 [deployment]
 deploymentTarget = "cloudrun"
 build = ["sh", "-c", "python deployment/public_package.py verify-root && python -m venv .venv && env -u PIP_TARGET -u PIP_USER -u PYTHONUSERBASE -u PYTHONPATH PIP_CONFIG_FILE=/dev/null .venv/bin/python -m pip install --no-user -r requirements-public.lock"]
-run = ["sh", "-c", "env -u PYTHONPATH -u PYTHONUSERBASE .venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"]
+run = ["sh", "-c", "env -u PYTHONPATH -u PYTHONUSERBASE FUTUREPATH_DEPLOYMENT_MODE=public FUTUREPATH_AI_PROVIDER=disabled FUTUREPATH_CV_ENABLED=false .venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"]
 
 [nix]
 channel = "stable-25_05"
@@ -35,7 +35,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = ".venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
+args = "env FUTUREPATH_DEPLOYMENT_MODE=public FUTUREPATH_AI_PROVIDER=disabled FUTUREPATH_CV_ENABLED=false .venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
 waitForPort = 5000
 
 [workflows.workflow.metadata]

@@ -1,16 +1,16 @@
-# FuturePath Intelligence AI v2 RC4
+# FuturePath Intelligence V3 RC1
 
-This synthetic career-planning prototype includes profile editing, explainable deterministic matching, confirmed skill gaps, career comparison, offline practice plans, and four optional AI functions: Career Advisor, Skill Gap Coach, Learning Roadmap, and session-only Career Chat. All career requirements and profiles are fictional. Generated advice is not verified labour-market evidence. No live research, salary forecast, real CV upload, or approved O*NET data is provided.
+FuturePath includes sample profiles and explicitly confirmed user skill states, explainable deterministic matching against fictional occupation requirements, gap analysis, comparison and practice plans. Local Ollama adds Career Advisor, Skill Gap Coach, Learning Roadmap, Chat and an optional local resume draft. No generated suggestion becomes a skill assertion without user confirmation. Occupation data remains synthetic; there is no live job research, salary forecast or approved O*NET/OpenAlex data.
 
 ## Release and provenance
 
-This local release candidate reconciles RC3 (`9b9d64d4493eb4cdec8e86f83b31843445cd834e`) with the reported staging interpreter repair. Only the top-level development Run and the workflow shell task now use `.venv/bin/python`; deployment already used that interpreter. Release schema/version and this note are updated. Application, scoring, fixtures, dependency pins, license files and integrity policy are unchanged. No RC4 commit or deployed version exists. The reported Replit-only `619c2d3` was not available in the public GitHub repository when checked, so its full diff/ancestry and reported Preview checks are not independently verified here.
+This V3 artifact is prepared from the local development tree on `development/v3-20261024`, based on development commit `aaa1a6c9afc2396b85b9d94fa224d6c326eb6e39`. Its sanitized predecessor is RC4 commit `8fadb3685556a913e5a3e1a80106059608e634d4`. Record the new candidate source commit separately with the exact artifact hashes. Previous stable production and RC3/RC4 artifacts remain preserved. Local engineering evidence is not a production deployment claim.
 
-`FUTUREPATH_AI_V2_RC4_MANIFEST.json` records the exact runtime member names, byte sizes, and SHA-256 values. The embedded manifest excludes itself. Verify its equality with the external manifest and verify the ZIP against the separate SHA-256 sidecar. Missing, changed, extra, or unsafe runtime files must fail verification. RC3 artifacts and its original Manifest are preserved.
+`FUTUREPATH_V3_RC1_MANIFEST.json` records exact source members, sizes and hashes. It excludes itself. Compare it with the external Manifest and ZIP SHA-256 sidecar. Root preflight rejects missing/altered/extra source files, including Agent memory and root requirements, while excluding only Git metadata, the installed `.venv` and bytecode-cache directories from source enumeration. Runtime environment contents still require independent inspection; they are not covered by source hashes.
 
 ## Build and run
 
-Use Python 3.11 or 3.12. The lock was installed locally on Windows Python 3.11.9 and 3.12.2; Replit/Linux compatibility remains unverified. Install only the exact pins in `requirements-public.lock` into an isolated virtual environment. AI needs no key when disabled.
+Use Python 3.11 or 3.12 and install exact pins from `requirements-public.lock` into an isolated environment. Local development defaults to installed Ollama model `qwen3.5:4b` at `http://127.0.0.1:11434`. No cloud key or Redis is needed for local Ollama. No model is automatically downloaded. Without a reachable model, use manual profiles and rule-based practice.
 
 ```sh
 python -B deployment/public_package.py verify-root
@@ -21,17 +21,31 @@ python -m venv .venv
 
 On Windows, use `.venv\Scripts\python.exe` for the virtual-environment interpreter. The shipped `.replit` performs integrity verification before its isolated locked build, clears pip/Python overrides, and preserves Streamlit CORS and XSRF protections. The package deliberately excludes root `requirements.txt`. Whether this suppresses Replit Autoscale's automatic installation stage requires a real Publishing Build log; it is not a documented guarantee. A local `/_stcore/health` response establishes server health only.
 
-Create/install the isolated environment before using the development Run button. Both development paths now use the same intended interpreter as deployment. No process-kill command, automatic dependency-file removal or Manifest bypass is included.
+The shipped Replit commands explicitly set public mode, AI disabled and CV disabled. Both development Run paths and Production Run use `.venv/bin/python`. Local Windows uses `.venv\Scripts\python.exe`; its environment can override provider settings for local work. Do not expose the unauthenticated Ollama service outside loopback. No automatic process termination or dependency-file cleanup is included.
 
 ## Staging dependency-file discrepancy
 
-A root `requirements.txt` was reported in Replit staging, but its tracked/ignored/generated status and creator are not established by the accessible GitHub source or this local workspace. Neither the RC3/RC4 package nor its application/workflow commands create that file. The full development repository intentionally retains its own runtime requirements for local lock parity; it is not a deployment root.
+The owner confirmed Agent additions in Replit-local `619c2d3` and a Run fix in `0add62a`. Those additions are excluded from sanitized releases. Preserve that history privately when switching Staging; do not merge the Agent branch or delete unknown untracked work. Development retains its own root requirements for lock parity and must not be deployed as a source root.
 
-Keep `verify-root` fail closed for any staging root `requirements.txt`, including an exact lock duplicate, empty file or alias. Preserve the staging file, hash and Git metadata before review; do not assume it is platform-generated and do not delete it automatically. Use an independently verified clean RC4 extraction for source comparison. Before a future authorized staging promotion, resolve provenance and preserve any reviewed file outside the publishing root, or obtain platform guidance if it is recreated. Moving a file outside the root is not proven to stop pre-build discovery. Unresolved recurrence is a publication blocker. Publishing Build remains unverified.
+Keep `verify-root` fail closed for any staging root `requirements.txt`, including an exact lock duplicate, empty file or alias. Preserve its bytes/history; do not automatically delete it or assume any new recurrence is platform-generated. Compare with a clean V3 extraction. Obtain platform guidance if it is recreated before the custom Build. A custom cleanup cannot fix a failure before that command. Publishing Build remains unverified.
+
+## Local resume privacy and limits
+
+Resume import is disabled in public mode, including Replit. It supports English text PDF/DOCX up to 2 MB, 10 PDF pages and 12,000 extracted text bytes. Scans/OCR, encrypted PDFs, macros/embeddings, unsafe ZIPs, oversized/complex documents and parser failures fall back to manual entry. Parsing uses a child process with a 512 MB memory ceiling, 12-second parent deadline and Linux CPU limit. These limits reduce resource risk; this is not a malware-analysis sandbox.
+
+No application file, database, prompt log or cross-session cache stores a resume. Common contact patterns are minimized before local extraction, but this is not guaranteed PII anonymization. The local model selects quotes, the server verifies literal source support, and controlled vocabulary maps mentions to unconfirmed skill suggestions. Neither extraction nor a mention proves proficiency. Users explicitly choose states before applying them to matching. Background claims never change scores.
+
+Clear removes application draft state and rotates the upload control. Confirmed skill choices remain in the user's profile; resetting those is separate. Streamlit/OS/model-host upload buffers, logs, swap or process memory may persist until their own cleanup; secure physical erasure is not guaranteed. Review local Ollama logging/binding. There is no cloud-CV route or automatic cloud fallback. Model output remains untrusted; failed validation leaves the deterministic app available.
+
+## Provider configuration
+
+`FUTUREPATH_AI_PROVIDER` accepts `ollama`, `runpod`, `disabled`, or test-only `mock` (explicit dependency injection; never real app inference). Local default is Ollama; public default is disabled. `FUTUREPATH_OLLAMA_URL` must be an explicit HTTP loopback address/port without credentials, paths or redirects. `FUTUREPATH_OLLAMA_MODEL` selects an already installed local model. Local inference uses one process-wide concurrent slot and a bounded per-session request window; those are local resource controls, not distributed cloud protection. JSON Schema requests are followed by strict server validation. Full responses are validated before display; partial streaming is deliberately not exposed.
+
+The runtime inventory has 55 pins (7 direct, 48 transitive) and 90 retained attribution captures. The two new dependencies are pypdf 6.21.2 and defusedxml 0.7.1; previous pins remain unchanged. Actual Linux wheels/licensing and Replit Publishing require their own release evidence.
 
 ## Optional AI server configuration
 
-AI defaults to disabled. Credentials belong only in server Secrets. Never place them in this package, browser fields, prompts, telemetry, or errors. A later operator must have authorization before changing Production Secrets, spending credits, or publishing.
+Public AI defaults to disabled. Local Ollama needs no cloud credential. For a separately authorized future RunPod deployment, credentials belong only in server Secrets. Never place them in this package, browser fields, prompts, telemetry, or errors. A later operator must have authorization before changing Production Secrets, spending credits, or publishing. The shipped Replit Run commands force AI off; enabling cloud AI therefore requires a reviewed new configuration release as well as Secrets.
 
 | Environment setting | Default or requirement |
 |---|---|
@@ -64,4 +78,4 @@ Before public AI activation, verify the exact endpoint with an explicitly author
 
 Licensing: see `LICENSE` and the English maintained derivative `THIRD_PARTY_NOTICES.en.md`; the original legal and historical records remain preserved in the development repository.
 
-The complete 53-pin inventory is `RUNTIME_DEPENDENCIES.csv`. `THIRD_PARTY_RUNTIME_NOTICES.zip` retains 88 captured license/attribution files and their hashes. These cover inspected Windows distributions; upstream Streamlit license text was captured separately with normalization noted in the inventory. Bundled-component terms remain applicable. Linux wheels, frontend assets and model/platform service terms require their own review. This companion is not a blanket legal-compliance certification.
+The complete 55-pin inventory is `RUNTIME_DEPENDENCIES.csv`. `THIRD_PARTY_RUNTIME_NOTICES.zip` retains 90 captured license/attribution files and their hashes. These cover inspected Windows distributions; upstream Streamlit license text was captured separately with normalization noted in the inventory. Bundled-component terms remain applicable. Linux wheels, frontend assets and model/platform service terms require their own review. This companion is not a blanket legal-compliance certification.
