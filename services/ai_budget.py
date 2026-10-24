@@ -39,12 +39,12 @@ class BudgetRejected(RuntimeError):
 
 @dataclass(frozen=True)
 class AIBudgetSettings:
-    daily_budget_usd: Decimal = Decimal("0.25")
-    daily_request_limit: int = 30
-    session_request_limit: int = 5
-    max_concurrent: int = 2
-    max_input_bytes: int = 12_000
-    max_output_tokens: int = 700
+    daily_budget_usd: Decimal = Decimal("0.10")
+    daily_request_limit: int = 10
+    session_request_limit: int = 3
+    max_concurrent: int = 1
+    max_input_bytes: int = 8_000
+    max_output_tokens: int = 512
     input_usd_per_million: Decimal = Decimal("0.77")
     output_usd_per_million: Decimal = Decimal("2.42")
 
@@ -52,12 +52,12 @@ class AIBudgetSettings:
     def from_environment(cls) -> "AIBudgetSettings":
         try:
             settings = cls(
-                daily_budget_usd=Decimal(os.getenv("FUTUREPATH_AI_DAILY_BUDGET_USD", "0.25")),
-                daily_request_limit=int(os.getenv("FUTUREPATH_AI_DAILY_REQUEST_LIMIT", "30")),
-                session_request_limit=int(os.getenv("FUTUREPATH_AI_SESSION_REQUEST_LIMIT", "5")),
-                max_concurrent=int(os.getenv("FUTUREPATH_AI_MAX_CONCURRENT", "2")),
-                max_input_bytes=int(os.getenv("FUTUREPATH_AI_MAX_INPUT_BYTES", "12000")),
-                max_output_tokens=int(os.getenv("FUTUREPATH_AI_MAX_OUTPUT_TOKENS", "700")),
+                daily_budget_usd=Decimal(os.getenv("FUTUREPATH_AI_DAILY_BUDGET_USD", "0.10")),
+                daily_request_limit=int(os.getenv("FUTUREPATH_AI_DAILY_REQUEST_LIMIT", "10")),
+                session_request_limit=int(os.getenv("FUTUREPATH_AI_SESSION_REQUEST_LIMIT", "3")),
+                max_concurrent=int(os.getenv("FUTUREPATH_AI_MAX_CONCURRENT", "1")),
+                max_input_bytes=int(os.getenv("FUTUREPATH_AI_MAX_INPUT_BYTES", "8000")),
+                max_output_tokens=int(os.getenv("FUTUREPATH_AI_MAX_OUTPUT_TOKENS", "512")),
                 input_usd_per_million=Decimal(os.getenv("FUTUREPATH_AI_INPUT_USD_PER_MILLION", "0.77")),
                 output_usd_per_million=Decimal(os.getenv("FUTUREPATH_AI_OUTPUT_USD_PER_MILLION", "2.42")),
             )
@@ -79,7 +79,7 @@ class AIBudgetSettings:
             raise BudgetUnavailable("invalid_limit_configuration")
         if not 512 <= self.max_input_bytes <= 12_000:
             raise BudgetUnavailable("invalid_limit_configuration")
-        if not 1 <= self.max_output_tokens <= 700:
+        if not 1 <= self.max_output_tokens <= 512:
             raise BudgetUnavailable("invalid_limit_configuration")
 
 

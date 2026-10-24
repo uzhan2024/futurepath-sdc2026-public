@@ -13,10 +13,17 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE_NAME = "futurepath-intelligence-v3-rc1.zip"
-MANIFEST_NAME = "FUTUREPATH_V3_RC1_MANIFEST.json"
-SCHEMA = "futurepath-intelligence-v3-rc1"
+PACKAGE_NAME = "futurepath-intelligence-v3-rc2.zip"
+MANIFEST_NAME = "FUTUREPATH_V3_RC2_MANIFEST.json"
+SCHEMA = "futurepath-intelligence-v3-rc2"
+GIT_ATTRIBUTES = (
+    b"# Preserve exact release bytes unless a path has an explicit canonical EOL.\n"
+    b"* -text\n"
+    b"/.gitattributes text eol=lf\n"
+    b"/.replit text eol=lf\n"
+)
 MEMBERS = (
+    ".gitattributes",
     ".replit",
     ".streamlit/config.toml",
     "LICENSE",
@@ -89,7 +96,21 @@ def _source_bytes(root: Path, name: str) -> bytes:
     payload = path.read_bytes()
     if len(payload) > MAX_MEMBER_BYTES:
         raise PackageError(f"package member too large: {name}")
+    _validate_control_bytes(name, payload)
     return payload
+
+
+def _validate_control_bytes(name: str, payload: bytes) -> None:
+    """Keep Git checkouts and integrity hashes consistent across platforms."""
+    if name in {".replit", ".gitattributes"}:
+        if b"\r" in payload or payload.startswith(b"\xef\xbb\xbf") or not payload.endswith(b"\n"):
+            raise PackageError(f"canonical LF without BOM is required: {name}")
+        try:
+            payload.decode("utf-8")
+        except UnicodeDecodeError:
+            raise PackageError(f"UTF-8 control file is required: {name}") from None
+    if name == ".gitattributes" and payload != GIT_ATTRIBUTES:
+        raise PackageError("reviewed Git attributes policy is required")
 
 
 def _zip_info(name: str) -> zipfile.ZipInfo:
@@ -103,6 +124,8 @@ def _zip_info(name: str) -> zipfile.ZipInfo:
 def build_package(root: Path = ROOT, output: Path | None = None) -> tuple[Path, str]:
     """Create byte-identical ZIPs for byte-identical allowlisted source files."""
     output = output or root / "dist" / PACKAGE_NAME
+    if any(path.exists() for path in (output, output.with_suffix(".sha256"), output.with_suffix(".manifest.json"))):
+        raise PackageError("release artifact already exists; use a new release path")
     source = {name: _source_bytes(root, name) for name in MEMBERS}
     if source["requirements-public.lock"] != _source_bytes(root, "requirements.txt"):
         raise PackageError("public runtime lock differs from local requirements")
@@ -118,7 +141,7 @@ def build_package(root: Path = ROOT, output: Path | None = None) -> tuple[Path, 
     if sum(map(len, source.values())) > MAX_PACKAGE_BYTES:
         raise PackageError("package exceeds the size limit")
     output.parent.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(output, "w") as archive:
+    with zipfile.ZipFile(output, "x") as archive:
         for name in sorted(source):
             archive.writestr(_zip_info(name), source[name])
     digest = _sha256(output.read_bytes())
@@ -144,6 +167,8 @@ def verify_package(path: Path) -> dict:
                 raise PackageError("unsafe package member")
         if sum(info.file_size for info in infos) > MAX_PACKAGE_BYTES:
             raise PackageError("package exceeds the size limit")
+        for name in (".replit", ".gitattributes"):
+            _validate_control_bytes(name, archive.read(name))
         manifest = json.loads(archive.read(MANIFEST_NAME))
         expected = {
             "schema": SCHEMA,

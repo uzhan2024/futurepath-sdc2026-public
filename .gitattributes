@@ -1,0 +1,4 @@
+# Preserve exact release bytes unless a path has an explicit canonical EOL.
+* -text
+/.gitattributes text eol=lf
+/.replit text eol=lf

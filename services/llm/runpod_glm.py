@@ -22,7 +22,7 @@ RUNPOD_BASE_URL = "https://api.runpod.ai/v2/b1dd8hy2hqo1nb/openai/v1"
 RUNPOD_MODEL = "glm-5.3"
 SUPPORTED_REASONING_EFFORTS = frozenset({"low", "medium", "high"})
 MAX_INPUT_BYTES = 12_000
-MAX_OUTPUT_TOKENS = 700
+MAX_OUTPUT_TOKENS = 512
 
 
 class _PrivateTransportLogs(logging.Filter):
@@ -77,9 +77,12 @@ def _usage(response) -> LLMUsage | None:
 class RunPodGLMProvider(LLMProvider):
     """Send one bounded Chat Completion to the fixed RunPod endpoint."""
 
-    def __init__(self, api_key: str, *, client=None):
+    def __init__(self, api_key: str, *, client=None, allow_compatibility_retry: bool = True):
         if not isinstance(api_key, str) or not api_key.strip():
             raise ProviderConfigurationError("RunPod API key is missing")
+        if type(allow_compatibility_retry) is not bool:
+            raise ProviderConfigurationError("Invalid RunPod retry configuration")
+        self._allow_compatibility_retry = allow_compatibility_retry
         _suppress_payload_logging()
         self._client = client or OpenAI(
             api_key=api_key,
@@ -90,8 +93,9 @@ class RunPodGLMProvider(LLMProvider):
         _suppress_payload_logging()
 
     @classmethod
-    def from_environment(cls, *, client=None) -> "RunPodGLMProvider":
-        return cls(os.environ.get("RUNPOD_API_KEY", ""), client=client)
+    def from_environment(cls, *, client=None, allow_compatibility_retry: bool = True) -> "RunPodGLMProvider":
+        return cls(os.environ.get("RUNPOD_API_KEY", ""), client=client,
+                   allow_compatibility_retry=allow_compatibility_retry)
 
     def complete(self, request: LLMCompletionRequest) -> LLMCompletionResponse:
         if (request.feature not in {"career_advisor", "skill_gap_coach", "learning_roadmap", "career_chat"}
@@ -154,6 +158,6 @@ class RunPodGLMProvider(LLMProvider):
                 extra_body={"reasoning_effort": reasoning_effort},
             )
         except BadRequestError as error:
-            if not _reasoning_parameter_unsupported(error):
+            if not self._allow_compatibility_retry or not _reasoning_parameter_unsupported(error):
                 raise
             return self._client.chat.completions.create(**payload)

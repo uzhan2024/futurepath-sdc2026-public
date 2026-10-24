@@ -1,12 +1,14 @@
-# FuturePath Intelligence V3 RC1
+# FuturePath Intelligence V3 RC2
 
 FuturePath includes sample profiles and explicitly confirmed user skill states, explainable deterministic matching against fictional occupation requirements, gap analysis, comparison and practice plans. Local Ollama adds Career Advisor, Skill Gap Coach, Learning Roadmap, Chat and an optional local resume draft. No generated suggestion becomes a skill assertion without user confirmation. Occupation data remains synthetic; there is no live job research, salary forecast or approved O*NET/OpenAlex data.
 
 ## Release and provenance
 
-This V3 artifact is prepared from the local development tree on `development/v3-20261024`, based on development commit `aaa1a6c9afc2396b85b9d94fa224d6c326eb6e39`. Its sanitized predecessor is RC4 commit `8fadb3685556a913e5a3e1a80106059608e634d4`. Record the new candidate source commit separately with the exact artifact hashes. Previous stable production and RC3/RC4 artifacts remain preserved. Local engineering evidence is not a production deployment claim.
+This V3 RC2 artifact is prepared from reviewed, allow-listed source on `development/v3-20261024`, based on development commit `aaa1a6c9afc2396b85b9d94fa224d6c326eb6e39`. Its sanitized predecessor is V3 RC1 commit `6e7a8d430a43031dabf401efb9bfa63c609943df`. RC2 retains the existing Ollama, confirmed-profile, English UI and local CV implementation, and adds the reviewed RunPod safety limits/retry controls and canonical LF release controls. Matching arithmetic, fixtures and all 55 dependency pins are unchanged. Record the new candidate source commit separately with the exact artifact hashes. Previous stable production and all historical artifacts remain preserved. Local engineering evidence is not a production deployment claim.
 
-`FUTUREPATH_V3_RC1_MANIFEST.json` records exact source members, sizes and hashes. It excludes itself. Compare it with the external Manifest and ZIP SHA-256 sidecar. Root preflight rejects missing/altered/extra source files, including Agent memory and root requirements, while excluding only Git metadata, the installed `.venv` and bytecode-cache directories from source enumeration. Runtime environment contents still require independent inspection; they are not covered by source hashes.
+`FUTUREPATH_V3_RC2_MANIFEST.json` records exact source members, sizes and hashes. It excludes itself. Compare it with the external Manifest and ZIP SHA-256 sidecar. Root preflight rejects missing/altered/extra source files, including Agent memory and root requirements, while excluding only Git metadata, the installed `.venv` and bytecode-cache directories from source enumeration. Runtime environment contents still require independent inspection; they are not covered by source hashes.
+
+The Manifest includes `.gitattributes`. Its reviewed policy forces `.replit` and `.gitattributes` to UTF-8 LF without BOM. Other members use `-text` to preserve their exact bytes during Git checkout, independent of `core.autocrlf`. Build, ZIP verification and root preflight reject CRLF control files or a changed attributes policy even if someone regenerates hashes. Do not repair a failed preflight by refreshing the Manifest in Replit. Release builds refuse to overwrite an existing ZIP or sidecar.
 
 ## Build and run
 
@@ -33,6 +35,8 @@ Keep `verify-root` fail closed for any staging root `requirements.txt`, includin
 
 Resume import is disabled in public mode, including Replit. It supports English text PDF/DOCX up to 2 MB, 10 PDF pages and 12,000 extracted text bytes. Scans/OCR, encrypted PDFs, macros/embeddings, unsafe ZIPs, oversized/complex documents and parser failures fall back to manual entry. Parsing uses a child process with a 512 MB memory ceiling, 12-second parent deadline and Linux CPU limit. These limits reduce resource risk; this is not a malware-analysis sandbox.
 
+CV inference is partially validated. Short fictional resume extraction succeeded locally; a longer fictional 2,185-byte text case failed strict validation twice. Arbitrary realistic resumes and complete multi-chunk extraction are not release-proven. No real resumes were used in these tests. Manual entry remains the supported fallback.
+
 No application file, database, prompt log or cross-session cache stores a resume. Common contact patterns are minimized before local extraction, but this is not guaranteed PII anonymization. The local model selects quotes, the server verifies literal source support, and controlled vocabulary maps mentions to unconfirmed skill suggestions. Neither extraction nor a mention proves proficiency. Users explicitly choose states before applying them to matching. Background claims never change scores.
 
 Clear removes application draft state and rotates the upload control. Confirmed skill choices remain in the user's profile; resetting those is separate. Streamlit/OS/model-host upload buffers, logs, swap or process memory may persist until their own cleanup; secure physical erasure is not guaranteed. Review local Ollama logging/binding. There is no cloud-CV route or automatic cloud fallback. Model output remains untrusted; failed validation leaves the deterministic app available.
@@ -52,17 +56,17 @@ Public AI defaults to disabled. Local Ollama needs no cloud credential. For a se
 | `FUTUREPATH_AI_ENABLED` | `false`; explicitly enable only after all live gates pass |
 | `RUNPOD_API_KEY` | Server-only credential, required for AI |
 | `REDIS_URL` | Shared private TLS `rediss://` service used by every replica |
-| `FUTUREPATH_AI_DAILY_BUDGET_USD` | Estimated USD `0.25` per UTC day |
-| `FUTUREPATH_AI_DAILY_REQUEST_LIMIT` | `30` |
-| `FUTUREPATH_AI_SESSION_REQUEST_LIMIT` | `5` per browser session per UTC day |
-| `FUTUREPATH_AI_MAX_CONCURRENT` | `2`, shared across day boundaries |
-| `FUTUREPATH_AI_MAX_INPUT_BYTES` | `12000` |
-| `FUTUREPATH_AI_MAX_OUTPUT_TOKENS` | `700`; lower server caps apply to every request |
+| `FUTUREPATH_AI_DAILY_BUDGET_USD` | Estimated USD `0.10` per UTC day |
+| `FUTUREPATH_AI_DAILY_REQUEST_LIMIT` | `10` |
+| `FUTUREPATH_AI_SESSION_REQUEST_LIMIT` | `3` per browser session per UTC day |
+| `FUTUREPATH_AI_MAX_CONCURRENT` | `1`, shared across day boundaries |
+| `FUTUREPATH_AI_MAX_INPUT_BYTES` | `8000` |
+| `FUTUREPATH_AI_MAX_OUTPUT_TOKENS` | `512`; lower server caps apply to every request |
 | `FUTUREPATH_AI_REASONING_EFFORT` | `low`; accepted configuration values: `low`, `medium`, `high` |
 | `FUTUREPATH_AI_INPUT_USD_PER_MILLION` | Supplied estimate `0.77` |
 | `FUTUREPATH_AI_OUTPUT_USD_PER_MILLION` | Supplied estimate `2.42` |
 
-The provisional adapter targets competition-supplied endpoint `https://api.runpod.ai/v2/b1dd8hy2hqo1nb/openai/v1` and model `glm-5.3`. It uses non-streaming Chat Completions, a 20-second SDK timeout, no SDK retries, and at most one retry after an explicit unsupported-`reasoning_effort` 400 response. Model availability, supported efforts, usage accounting, response shape, live prices, and billing have not been verified by a paid request.
+The adapter targets competition-supplied endpoint `https://api.runpod.ai/v2/b1dd8hy2hqo1nb/openai/v1` and request model `glm-5.3`. One owner-reported live smoke call succeeded using OpenAI SDK 2.30.0: the response model was `zai-org/GLM-5.3`, the fixed response was `FuturePath API OK`, and reported usage was 20 prompt / 6 completion tokens. This verifies one simple request only; it does not verify the application-pinned OpenAI SDK 2.11.0 against the live endpoint, any of the four integrated workflows, shared Redis enforcement, provider billing, live pricing, or production readiness. Official RunPod documentation describes the generic OpenAI-compatible Chat Completions path for serverless vLLM endpoints, but does not identify this exact competition endpoint/model pair: https://docs.runpod.io/serverless/vllm/openai-compatibility. The adapter uses non-streaming Chat Completions, a 20-second SDK timeout, disabled SDK retries, and at most one compatibility retry after an explicit unsupported-`reasoning_effort` 400 response.
 
 Redis URL query options and fragments are not accepted. Use the credentials/hostname/port/database URL form. The client explicitly requires certificate validation and hostname matching. Do not bypass those checks to make configuration work.
 
@@ -74,7 +78,7 @@ The user separately consents before transmitting a bounded question and minimal 
 
 Generated prose rejects external hyperlinks. Suggested chat follow-ups remain in the current session and do not trigger requests automatically. Schema and reference checks reduce unsupported output but cannot establish its factual truth.
 
-Before public AI activation, verify the exact endpoint with an explicitly authorized small paid smoke, actual usage and reasoning accounting, current prices, provider account spending controls, and a real shared Redis service. Keep public AI disabled until these pass. Before publication, also verify the Replit Build/Run logs, anonymous HTTPS journey, WebSocket connectivity, session isolation, redacted application logs, and exact deployed source/package provenance. No public deployment or live model success is claimed by this candidate.
+Before public AI activation, verify the application-pinned SDK with an explicitly authorized small live request, actual usage and reasoning accounting, current prices, provider account spending controls, and a real shared Redis service. Keep public AI disabled until these pass. A single reported endpoint smoke is recorded but does not satisfy these gates. Before publication, also verify the Replit Build/Run logs, anonymous HTTPS journey, WebSocket connectivity, session isolation, redacted application logs, and exact deployed source/package provenance. No public deployment or public AI availability is claimed by this candidate.
 
 Licensing: see `LICENSE` and the English maintained derivative `THIRD_PARTY_NOTICES.en.md`; the original legal and historical records remain preserved in the development repository.
 
