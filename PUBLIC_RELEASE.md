@@ -1,12 +1,12 @@
-# FuturePath Intelligence AI v2 RC3
+# FuturePath Intelligence AI v2 RC4
 
 This synthetic career-planning prototype includes profile editing, explainable deterministic matching, confirmed skill gaps, career comparison, offline practice plans, and four optional AI functions: Career Advisor, Skill Gap Coach, Learning Roadmap, and session-only Career Chat. All career requirements and profiles are fictional. Generated advice is not verified labour-market evidence. No live research, salary forecast, real CV upload, or approved O*NET data is provided.
 
 ## Release and provenance
 
-This local release candidate comes from the uncommitted `ai-release-v2` working tree based on development commit `aaa1a6c9afc2396b85b9d94fa224d6c326eb6e39`. It has no candidate commit or deployed version. The existing public release remains a separate fallback. Record a reviewed candidate commit before any later authorized publication.
+This local release candidate reconciles RC3 (`9b9d64d4493eb4cdec8e86f83b31843445cd834e`) with the reported staging interpreter repair. Only the top-level development Run and the workflow shell task now use `.venv/bin/python`; deployment already used that interpreter. Release schema/version and this note are updated. Application, scoring, fixtures, dependency pins, license files and integrity policy are unchanged. No RC4 commit or deployed version exists. The reported Replit-only `619c2d3` was not available in the public GitHub repository when checked, so its full diff/ancestry and reported Preview checks are not independently verified here.
 
-`FUTUREPATH_AI_V2_RC3_MANIFEST.json` records the exact runtime member names, byte sizes, and SHA-256 values. The embedded manifest excludes itself. Verify its equality with the external manifest and verify the ZIP against the separate SHA-256 sidecar. Missing, changed, extra, or unsafe runtime files must fail verification. Historical artifacts are preserved.
+`FUTUREPATH_AI_V2_RC4_MANIFEST.json` records the exact runtime member names, byte sizes, and SHA-256 values. The embedded manifest excludes itself. Verify its equality with the external manifest and verify the ZIP against the separate SHA-256 sidecar. Missing, changed, extra, or unsafe runtime files must fail verification. RC3 artifacts and its original Manifest are preserved.
 
 ## Build and run
 
@@ -20,6 +20,14 @@ python -m venv .venv
 ```
 
 On Windows, use `.venv\Scripts\python.exe` for the virtual-environment interpreter. The shipped `.replit` performs integrity verification before its isolated locked build, clears pip/Python overrides, and preserves Streamlit CORS and XSRF protections. The package deliberately excludes root `requirements.txt`. Whether this suppresses Replit Autoscale's automatic installation stage requires a real Publishing Build log; it is not a documented guarantee. A local `/_stcore/health` response establishes server health only.
+
+Create/install the isolated environment before using the development Run button. Both development paths now use the same intended interpreter as deployment. No process-kill command, automatic dependency-file removal or Manifest bypass is included.
+
+## Staging dependency-file discrepancy
+
+A root `requirements.txt` was reported in Replit staging, but its tracked/ignored/generated status and creator are not established by the accessible GitHub source or this local workspace. Neither the RC3/RC4 package nor its application/workflow commands create that file. The full development repository intentionally retains its own runtime requirements for local lock parity; it is not a deployment root.
+
+Keep `verify-root` fail closed for any staging root `requirements.txt`, including an exact lock duplicate, empty file or alias. Preserve the staging file, hash and Git metadata before review; do not assume it is platform-generated and do not delete it automatically. Use an independently verified clean RC4 extraction for source comparison. Before a future authorized staging promotion, resolve provenance and preserve any reviewed file outside the publishing root, or obtain platform guidance if it is recreated. Moving a file outside the root is not proven to stop pre-build discovery. Unresolved recurrence is a publication blocker. Publishing Build remains unverified.
 
 ## Optional AI server configuration
 

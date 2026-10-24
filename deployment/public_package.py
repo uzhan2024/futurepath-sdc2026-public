@@ -12,9 +12,9 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE_NAME = "futurepath-intelligence-ai-v2-rc3.zip"
-MANIFEST_NAME = "FUTUREPATH_AI_V2_RC3_MANIFEST.json"
-SCHEMA = "futurepath-intelligence-ai-v2-rc3"
+PACKAGE_NAME = "futurepath-intelligence-ai-v2-rc4.zip"
+MANIFEST_NAME = "FUTUREPATH_AI_V2_RC4_MANIFEST.json"
+SCHEMA = "futurepath-intelligence-ai-v2-rc4"
 MEMBERS = (
     ".replit",
     ".streamlit/config.toml",

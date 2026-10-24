@@ -1,5 +1,5 @@
 entrypoint = "app.py"
-run = "python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
+run = ".venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
 modules = ["python-3.12"]
 
 [[ports]]
@@ -35,7 +35,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
+args = ".venv/bin/python -m streamlit run app.py --server.address=0.0.0.0 --server.port=5000 --server.headless=true"
 waitForPort = 5000
 
 [workflows.workflow.metadata]
