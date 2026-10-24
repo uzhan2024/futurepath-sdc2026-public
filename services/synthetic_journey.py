@@ -14,36 +14,36 @@ GUIDANCE_VERSION = "synthetic-practice-v1"
 # These are illustrative exercises, not verified courses or external resources.
 _PRACTICE = {
     "demo-skill-01": (
-        "把一个虚构问题拆成输入、限制和可检查的结果。",
-        "保留问题拆解表和一次修订说明。",
+        "Break a fictional problem into inputs, constraints, and checkable outcomes.",
+        "Keep the problem outline and a short note describing one revision.",
     ),
     "demo-skill-02": (
-        "向同伴解释一个合成项目的目标，再根据反馈改写说明。",
-        "保留讲解提纲和反馈后的版本。",
+        "Explain the goal of a synthetic project to a peer, then revise the explanation using their feedback.",
+        "Keep the talk outline and the revised version.",
     ),
     "demo-skill-03": (
-        "编写一个只处理合成数据的小程序，加入输入校验。",
-        "保留代码、示例输入及预期输出。",
+        "Write a small program that processes synthetic data and validates its inputs.",
+        "Keep the code, a sample input, and the expected output.",
     ),
     "demo-skill-04": (
-        "用一张自制小表练习检查缺失值，并解释一个简单结论的限制。",
-        "保留表格、计算步骤和限制说明。",
+        "Use a small self-made table to inspect missing values and explain the limits of one simple conclusion.",
+        "Keep the table, calculation steps, and limitations note.",
     ),
     "demo-skill-05": (
-        "为一个虚构账户场景列出最小权限和异常处理步骤。",
-        "保留风险清单和改进后的检查表。",
+        "For a fictional account scenario, list least-privilege choices and exception-handling steps.",
+        "Keep the risk list and an improved review checklist.",
     ),
     "demo-skill-06": (
-        "和同伴为一个小型合成项目分工，并记录一次交接。",
-        "保留分工、交接记录和复盘要点。",
+        "Divide work with a peer on a small synthetic project and record one handoff.",
+        "Keep the task split, handoff note, and a few retrospective points.",
     ),
     "demo-skill-07": (
-        "为一个合成项目写清目的、运行步骤和已知限制。",
-        "保留可供他人照做的短文档。",
+        "Document the purpose, run steps, and known limitations of a synthetic project.",
+        "Keep a short guide that another person could follow.",
     ),
     "demo-skill-08": (
-        "完成一个范围受限的合成项目，记录一次失败和修正。",
-        "保留作品链接或本地记录及反思。",
+        "Complete a small synthetic project and record one failure and correction.",
+        "Keep a project link or local note and a brief reflection.",
     ),
 }
 

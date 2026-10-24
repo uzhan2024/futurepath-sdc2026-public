@@ -1,0 +1,54 @@
+name,version,direct,purpose,license,license_files
+altair,6.3.0,False,Streamlit visualization dependency,BSD-3-Clause,attributions/altair/altair-6.3.0.dist-info/licenses/LICENSE
+annotated-types,0.8.0,False,Typed validation metadata,MIT,attributions/annotated-types/annotated_types-0.8.0.dist-info/licenses/LICENSE
+anyio,4.15.1,False,Asynchronous networking support,MIT,attributions/anyio/anyio-4.15.1.dist-info/licenses/LICENSE
+attrs,26.1.0,False,Validation and data classes,MIT,attributions/attrs/attrs-26.1.0.dist-info/licenses/LICENSE
+certifi,2026.10.19,False,TLS CA bundle,MPL-2.0,attributions/certifi/certifi-2026.10.19.dist-info/licenses/LICENSE
+charset-normalizer,3.5.2,False,HTTP character decoding,MIT,attributions/charset-normalizer/charset_normalizer-3.5.2.dist-info/licenses/LICENSE
+click,8.5.0,False,Command-line support,BSD-3-Clause,attributions/click/click-8.5.0.dist-info/licenses/LICENSE.txt
+cloudpickle,3.1.2,False,Object serialization support,BSD-3-Clause,attributions/cloudpickle/cloudpickle-3.1.2.dist-info/licenses/LICENSE
+colorama,0.4.6,False,Terminal color compatibility,BSD-3-Clause,attributions/colorama/colorama-0.4.6.dist-info/licenses/LICENSE.txt
+distro,1.9.0,False,Platform detection,Apache-2.0,attributions/distro/distro-1.9.0.dist-info/LICENSE
+h11,0.16.0,False,HTTP protocol support,MIT,attributions/h11/h11-0.16.0.dist-info/licenses/LICENSE.txt
+httpcore,1.0.9,False,HTTP transport,BSD-3-Clause,attributions/httpcore/httpcore-1.0.9.dist-info/licenses/LICENSE.md
+httpx,0.28.1,False,SDK HTTP client,BSD-3-Clause,attributions/httpx/httpx-0.28.1.dist-info/licenses/LICENSE.md
+idna,3.20,False,Internationalized domain names,BSD-3-Clause,attributions/idna/idna-3.20.dist-info/licenses/LICENSE.md
+itsdangerous,2.2.0,False,Signed-data support,BSD-3-Clause,attributions/itsdangerous/itsdangerous-2.2.0.dist-info/LICENSE.txt
+Jinja2,3.1.6,False,Template support,BSD-3-Clause,attributions/jinja2/jinja2-3.1.6.dist-info/licenses/LICENSE.txt
+jiter,0.17.0,False,SDK JSON parsing,MIT,attributions/jiter/jiter-0.17.0.dist-info/licenses/LICENSE
+joblib,1.6.0,False,Scientific dependency support,BSD-3-Clause,attributions/joblib/joblib-1.6.0.dist-info/licenses/LICENSE.txt
+jsonschema,4.26.0,False,JSON schema validation,MIT,attributions/jsonschema/jsonschema-4.26.0.dist-info/licenses/COPYING
+jsonschema-specifications,2025.9.1,False,Schema definitions,MIT,attributions/jsonschema-specifications/jsonschema_specifications-2025.9.1.dist-info/licenses/COPYING
+MarkupSafe,3.0.4,False,Template escaping,BSD-3-Clause,attributions/markupsafe/markupsafe-3.0.4.dist-info/licenses/LICENSE.txt
+narwhals,2.27.1,False,Dataframe interoperability,MIT,attributions/narwhals/narwhals-2.27.1.dist-info/licenses/LICENSE.md
+numpy,2.4.6,False,Numerical dependency; no career ML training,BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0,attributions/numpy/numpy-2.4.6.dist-info/licenses/LICENSE.txt; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/_core/src/highway/LICENSE; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/_core/src/multiarray/dragon4_LICENSE.txt; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/ma/LICENSE; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/random/LICENSE.md; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/random/src/distributions/LICENSE.md; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/random/src/philox/LICENSE.md; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md; attributions/numpy/numpy-2.4.6.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md; attributions/numpy/numpy/_core/include/numpy/random/LICENSE.txt; attributions/numpy/numpy/ma/LICENSE; attributions/numpy/numpy/random/LICENSE.md
+openai,2.11.0,True,Client SDK for RunPod; not OpenAI model inference,Apache-2.0,attributions/openai/openai-2.11.0.dist-info/licenses/LICENSE
+packaging,26.3,False,Package version support,Apache-2.0 OR BSD-2-Clause,attributions/packaging/packaging-26.3.dist-info/licenses/LICENSE; attributions/packaging/packaging-26.3.dist-info/licenses/LICENSE.APACHE; attributions/packaging/packaging-26.3.dist-info/licenses/LICENSE.BSD
+pandas,3.0.6,False,Streamlit data presentation dependency,BSD-3-Clause,attributions/pandas/pandas-3.0.6.dist-info/LICENSE
+pillow,13.0.0,False,Image support,MIT-CMU,attributions/pillow/pillow-13.0.0.dist-info/licenses/LICENSE
+protobuf,7.36.2,False,Streamlit messaging,BSD-3-Clause,attributions/protobuf/protobuf-7.36.2.dist-info/LICENSE
+pyarrow,26.0.0,False,Data serialization,Apache-2.0,attributions/pyarrow/pyarrow-26.0.0.dist-info/licenses/LICENSE.txt; attributions/pyarrow/pyarrow-26.0.0.dist-info/licenses/NOTICE.txt
+pydantic,2.14.1,False,SDK data validation,MIT,attributions/pydantic/pydantic-2.14.1.dist-info/licenses/LICENSE
+pydantic_core,2.50.1,False,Validation engine,MIT,attributions/pydantic-core/pydantic_core-2.50.1.dist-info/licenses/LICENSE
+pydeck,0.9.3,False,Streamlit visualization dependency,Apache-2.0,attributions/pydeck/pydeck-0.9.3.dist-info/licenses/LICENSE.txt
+python-dateutil,3.0.0,False,Date handling,Apache-2.0 / BSD-3-Clause; scope per shipped LICENSE,attributions/python-dateutil/python_dateutil-3.0.0.dist-info/licenses/LICENSE
+python-multipart,0.0.32,False,Streamlit request support,Apache-2.0,attributions/python-multipart/python_multipart-0.0.32.dist-info/licenses/LICENSE.txt
+referencing,0.37.0,False,Schema references,MIT,attributions/referencing/referencing-0.37.0.dist-info/licenses/COPYING
+requests,2.34.2,True,Locked architecture dependency; no public data refresh,Apache-2.0,attributions/requests/requests-2.34.2.dist-info/licenses/LICENSE; attributions/requests/requests-2.34.2.dist-info/licenses/NOTICE
+redis,6.4.0,True,TLS shared AI usage guard client; real service unverified,MIT,attributions/redis/redis-6.4.0.dist-info/licenses/LICENSE
+rpds-py,2026.9.1,False,Schema data structures,MIT,attributions/rpds-py/rpds_py-2026.9.1.dist-info/licenses/LICENSE
+scikit-learn,1.9.1,True,Locked architecture dependency; not the scoring engine,BSD-3-Clause,attributions/scikit-learn/scikit_learn-1.9.1.dist-info/licenses/COPYING; attributions/scikit-learn/sklearn/externals/array_api_compat/LICENSE; attributions/scikit-learn/sklearn/externals/array_api_extra/LICENSE; attributions/scikit-learn/sklearn/svm/src/liblinear/COPYRIGHT
+scipy,1.17.1,False,Scientific dependency support,BSD-3-Clause; bundled terms retained,attributions/scipy/scipy-1.17.1.dist-info/LICENSE.txt; attributions/scipy/scipy/_lib/_uarray/LICENSE; attributions/scipy/scipy/fft/_pocketfft/LICENSE.md; attributions/scipy/scipy/integrate/LICENSE_DOP; attributions/scipy/scipy/spatial/qhull_src/COPYING_QHULL.txt
+six,1.17.0,False,Compatibility support,MIT,attributions/six/six-1.17.0.dist-info/LICENSE
+sniffio,1.3.1,False,Async runtime detection,MIT OR Apache-2.0,attributions/sniffio/sniffio-1.3.1.dist-info/LICENSE; attributions/sniffio/sniffio-1.3.1.dist-info/LICENSE.APACHE2; attributions/sniffio/sniffio-1.3.1.dist-info/LICENSE.MIT
+starlette,1.9.0,False,Web runtime support,BSD-3-Clause,attributions/starlette/starlette-1.9.0.dist-info/licenses/LICENSE.md
+streamlit,1.66.1,True,Application interface and session server,Apache-2.0,attributions/upstream/streamlit-1.66.1-LICENSE
+threadpoolctl,3.7.0,False,Scientific thread control,BSD-3-Clause,attributions/threadpoolctl/threadpoolctl-3.7.0.dist-info/licenses/LICENSE
+tqdm,4.70.1,False,SDK progress support,MPL-2.0 AND MIT,attributions/tqdm/tqdm-4.70.1.dist-info/licenses/LICENCE
+typing-inspection,0.4.4,False,Typing inspection,MIT,attributions/typing-inspection/typing_inspection-0.4.4.dist-info/licenses/LICENSE
+typing_extensions,4.16.0,False,Typing compatibility,PSF-2.0,attributions/typing-extensions/typing_extensions-4.16.0.dist-info/licenses/LICENSE
+tzdata,2026.5,False,Time-zone data,Apache-2.0,attributions/tzdata/tzdata-2026.5.dist-info/licenses/LICENSE; attributions/tzdata/tzdata-2026.5.dist-info/licenses/licenses/LICENSE_APACHE
+urllib3,2.8.0,False,HTTP support,MIT,attributions/urllib3/urllib3-2.8.0.dist-info/licenses/LICENSE.txt
+uvicorn,0.54.0,False,Web runtime support,BSD-3-Clause,attributions/uvicorn/uvicorn-0.54.0.dist-info/licenses/LICENSE.md
+watchdog,6.0.0,False,File monitoring support,Apache-2.0,attributions/watchdog/watchdog-6.0.0.dist-info/AUTHORS; attributions/watchdog/watchdog-6.0.0.dist-info/COPYING; attributions/watchdog/watchdog-6.0.0.dist-info/LICENSE
+websockets,17.3,False,WebSocket protocol support,BSD-3-Clause,attributions/websockets/websockets-17.3.dist-info/licenses/LICENSE

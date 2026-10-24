@@ -12,14 +12,17 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE_NAME = "futurepath-public-prototype-synthetic-v1.zip"
-MANIFEST_NAME = "PUBLIC_PACKAGE_MANIFEST.json"
-SCHEMA = "futurepath-public-synthetic-package-v1"
+PACKAGE_NAME = "futurepath-intelligence-ai-v2-rc3.zip"
+MANIFEST_NAME = "FUTUREPATH_AI_V2_RC3_MANIFEST.json"
+SCHEMA = "futurepath-intelligence-ai-v2-rc3"
 MEMBERS = (
     ".replit",
     ".streamlit/config.toml",
     "LICENSE",
-    "THIRD_PARTY_NOTICES.md",
+    "PUBLIC_RELEASE.md",
+    "THIRD_PARTY_NOTICES.en.md",
+    "RUNTIME_DEPENDENCIES.csv",
+    "THIRD_PARTY_RUNTIME_NOTICES.zip",
     "app.py",
     "deployment/public_package.py",
     "domain/__init__.py",
@@ -31,9 +34,15 @@ MEMBERS = (
     "fixtures/synthetic_requirements.py",
     "requirements-public.lock",
     "services/__init__.py",
+    "services/ai_budget.py",
+    "services/ai_guidance.py",
+    "services/ai_runtime.py",
     "services/matching.py",
     "services/profile_intake.py",
     "services/synthetic_journey.py",
+    "services/llm/__init__.py",
+    "services/llm/provider.py",
+    "services/llm/runpod_glm.py",
     "ui/__init__.py",
     "ui/skills_intake.py",
     "ui/synthetic_journey.py",
@@ -94,7 +103,8 @@ def build_package(root: Path = ROOT, output: Path | None = None) -> tuple[Path, 
             for name in MEMBERS
         ],
     }
-    source[MANIFEST_NAME] = _json_bytes(manifest)
+    manifest_bytes = _json_bytes(manifest)
+    source[MANIFEST_NAME] = manifest_bytes
     if sum(map(len, source.values())) > MAX_PACKAGE_BYTES:
         raise PackageError("package exceeds the size limit")
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -103,6 +113,7 @@ def build_package(root: Path = ROOT, output: Path | None = None) -> tuple[Path, 
             archive.writestr(_zip_info(name), source[name])
     digest = _sha256(output.read_bytes())
     output.with_suffix(".sha256").write_text(f"{digest}  {output.name}\n", encoding="ascii")
+    output.with_suffix(".manifest.json").write_bytes(manifest_bytes)
     verify_package(output)
     return output, digest
 
