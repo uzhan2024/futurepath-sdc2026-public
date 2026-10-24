@@ -9,7 +9,7 @@ FuturePath is an English-language career exploration prototype for learners and 
 ## Start here
 
 - [Watch the demo video](https://youtu.be/Pzd7-IM2w-8)
-- [Open the owner-provided V3 RC2 application](https://futurepath-sdc-2026-public-1.replit.app/)
+- [Open the live application](https://futurepath-sdc-2026-public-1.replit.app/)
 - [Existing public prototype](https://futurepath-sdc-2026-public.replit.app)
 - [Architecture and trust boundaries](docs/architecture.md)
 - [Submission documents and outstanding approvals](submission/README.md)
@@ -19,7 +19,7 @@ FuturePath is an English-language career exploration prototype for learners and 
 
 Anonymous HTTP checks on 25 October 2026 MYT returned 200 for the public prototype and 200 / `ok` for its health endpoint. This is availability evidence only. The deployed commit, V3 feature availability, independent V3 Staging, WebSocket behaviour and production logs were not verified in this documentation task. The existing public deployment remains the fallback. No new deployment or public AI/CV activation is claimed.
 
-**New submission links: PROVIDED.** The owner supplied the demo video and V3 RC2 application URLs above. Independent anonymous accessibility, video playback/duration and application deployment/version verification are pending; these links are not marked independently verified. The earlier availability checks above concern the existing fallback URL only.
+**Submission links: PROVIDED / HTTP_CHECKED.** On 25 October 2026 MYT, the [live app](https://futurepath-sdc-2026-public-1.replit.app/) returned anonymous HTTP 200 and its health endpoint returned 200 / `ok`. The [demo video](https://youtu.be/Pzd7-IM2w-8) page and oEmbed metadata returned 200. Full video playback, duration/content, complete application workflows and exact deployed commit remain unverified. The earlier checks above concern the fallback URL.
 
 ## Problem and solution
 
@@ -150,6 +150,6 @@ The source Manifest does not hash installed wheels. The 55-pin lock does not con
 
 Project source: [Apache License 2.0](LICENSE). Preserve the [third-party notices](THIRD_PARTY_NOTICES.en.md), [runtime inventory](RUNTIME_DEPENDENCIES.csv) and [captured attribution archive](THIRD_PARTY_RUNTIME_NOTICES.zip).
 
-Official-form review copies exist privately, but contain personal information and unresolved declarations/signatures. They are not published here. See the [submission inventory and human checklist](submission/README.md). No signature, proof-of-use PDF, final video, competition upload or submission is fabricated.
+Reviewed [Replit and OpenAI Codex proof-of-use files](submission/proof-of-use/README.md) are included with their evidence limits. Corrected unsigned Proposal and Technical Declaration DOCX/PDF files were prepared separately and remain outside Git pending the leader's final confirmation and fresh signatures. Existing signed copies with superseded text are also excluded. See the [submission inventory and signing checklist](submission/README.md) and [release/security checks](submission/RELEASE_AND_SECURITY_CHECKS.md). No signature, sponsor credit, production AI result or competition submission is fabricated.
 
 Known limitations include synthetic-only roles, no live job/salary data, partial local CV validation, unverified integrated cloud AI, unverified new Linux Publishing and no measured career outcomes. Preserve the current production fallback until a separately authorized replacement passes real platform gates.
