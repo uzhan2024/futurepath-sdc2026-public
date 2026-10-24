@@ -8,6 +8,8 @@ FuturePath is an English-language career exploration prototype for learners and 
 
 ## Start here
 
+- [Watch the demo video](https://youtu.be/Pzd7-IM2w-8)
+- [Open the owner-provided V3 RC2 application](https://futurepath-sdc-2026-public-1.replit.app/)
 - [Existing public prototype](https://futurepath-sdc-2026-public.replit.app)
 - [Architecture and trust boundaries](docs/architecture.md)
 - [Submission documents and outstanding approvals](submission/README.md)
@@ -17,7 +19,7 @@ FuturePath is an English-language career exploration prototype for learners and 
 
 Anonymous HTTP checks on 25 October 2026 MYT returned 200 for the public prototype and 200 / `ok` for its health endpoint. This is availability evidence only. The deployed commit, V3 feature availability, independent V3 Staging, WebSocket behaviour and production logs were not verified in this documentation task. The existing public deployment remains the fallback. No new deployment or public AI/CV activation is claimed.
 
-A final approved demo video URL is not available in the reviewed materials.
+**New submission links: PROVIDED.** The owner supplied the demo video and V3 RC2 application URLs above. Independent anonymous accessibility, video playback/duration and application deployment/version verification are pending; these links are not marked independently verified. The earlier availability checks above concern the existing fallback URL only.
 
 ## Problem and solution
 

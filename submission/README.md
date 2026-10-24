@@ -17,8 +17,9 @@ This directory intentionally contains no final-form PDF, signature, private cont
 | `SDC2026_FoolsHorizon_Replit_POU.pdf` | NEEDS_REVIEW | An older private Replit/GitHub evidence review PDF exists. It is not verified as a final organiser-approved proof-of-use form or current deployment/version proof. |
 | `SDC2026_FoolsHorizon_Runpod_POU.pdf` | MISSING | One owner-reported successful endpoint smoke is recorded, but no approved public proof-of-use PDF or account/credit evidence was located. |
 | English pitch deck | NEEDS_REVIEW | A private V3 RC1 review PDF and source exist. Replace stale RC1/local-only and 485-test statements with verified RC2/491-pass evidence before approval. |
-| English narration and scene plan | NEEDS_REVIEW | Private scripts and an approximately 6:20 recording plan exist; a plan is not a recorded video. Reconcile with the final deck and actual demo. |
-| Final 5-7 minute demo video and link | MISSING | No verified final recording or approved video URL was located. |
+| English narration and scene plan | NEEDS_REVIEW | Private scripts and an approximately 6:20 recording plan exist. Reconcile them with the final deck and the newly provided video; actual duration and content are not independently verified. |
+| Demo video and link | PROVIDED | [Owner-provided demo video](https://youtu.be/Pzd7-IM2w-8). Independent anonymous playback, duration and content verification are pending. |
+| Public V3 RC2 application link | PROVIDED | [Owner-provided V3 RC2 application](https://futurepath-sdc-2026-public-1.replit.app/). Independent anonymous accessibility, runtime and deployed-version verification are pending. |
 | Approved RC2 source, dependency and attribution evidence | READY | Exact approved 42-file source, 55 dependency pins and 90 retained attribution items are available; this does not certify final competition acceptance. |
 | Final signed/uploaded competition entry | MISSING | No signature or upload is performed or claimed by this repository preparation. |
 
@@ -45,7 +46,7 @@ The accessible two templates do not establish a mandatory `src/main.py` layout, 
 9. Obtain explicit privacy approval before making email, telephone, signatures or other personal information public. Decide whether final forms belong only in the private submission portal or whether approved redacted copies may be published later.
 10. Have the authorised participant complete every required checkbox/declaration, signature and actual date in the official forms, including Proposal Section 7 and Technical Declaration Section 8. Never pre-sign, infer dates or guess remaining legal facts.
 11. Review/export final PDFs, check all official word limits and render every page after final human edits. No fresh visual verification of those final edits is claimed here.
-12. Approve the updated pitch, record and review the actual 5-7 minute video, verify anonymous link access, and check the organiser's final required deliverables/names.
+12. Approve the updated pitch, review the provided video against the actual demo, confirm its required 5-7 minute duration and anonymous playback, independently verify the provided application URL, and check the organiser's final required deliverables/names.
 13. Upload only through the verified organiser channel after the owner approves. This task does not sign, push, publish, deploy or submit anything.
 
 ## Consistent implementation disclosure
@@ -54,16 +55,18 @@ The accessible two templates do not establish a mandatory `src/main.py` layout, 
 - All occupation requirements and sample profiles are synthetic. No restricted O*NET records, live jobs/salaries, measured career outcomes or verified qualifications are included.
 - AI never changes deterministic scores. Unknown and Not Reported are not treated as absence.
 - Resume extraction suggestions require review and explicit confirmation. Longer-case local CV validation remains incomplete.
-- The existing public prototype is a separately hosted fallback; its current deployed commit and independent V3 Staging are not established by the source candidate.
+- The existing public prototype is a separately hosted fallback. The owner has provided a separate V3 RC2 application URL; independent accessibility and deployed-source/version verification are pending. No independently verified V3 Staging identity is established here.
 - Approved Replit Run commands keep public AI and CV disabled. One reported RunPod request is not proof that the four application workflows, pinned SDK, shared cloud budgets or production AI work live.
 - The lock contains 55 exact pins, including pypdf and defusedxml. The 90 captured attribution items concern inspected distributions, not blanket coverage of Linux wheels, frontend assets or service/model terms.
 
 ## Public links and repository boundary
 
+- **PROVIDED:** [Demo video](https://youtu.be/Pzd7-IM2w-8); independent anonymous playback, duration and content verification pending.
+- **PROVIDED:** [Public V3 RC2 application](https://futurepath-sdc-2026-public-1.replit.app/); independent anonymous accessibility, runtime and deployed-version verification pending.
 - [Existing public prototype](https://futurepath-sdc-2026-public.replit.app): anonymous HTTP 200 and health 200 / `ok` checked on 25 October 2026 MYT; deployed version not verified here.
 - [Public GitHub repository](https://github.com/uzhan2024/futurepath-sdc2026-public): anonymously reachable. This local submission branch has not been pushed.
 - [Approved RC2 branch](https://github.com/uzhan2024/futurepath-sdc2026-public/tree/candidate/v3-rc2-20261025): independently reachable; its exact source commit is recorded above.
-- Final video: MISSING. Submission portal URL: NOT_VERIFIED. Separate V3 Staging URL: NOT_VERIFIED.
+- Submission portal URL: NOT_VERIFIED. Separate V3 Staging identity: NOT_VERIFIED. Provided links do not complete any proof-of-use, signature or declaration requirement.
 
 The repository's default branch is not changed. Judges following the repository root may still see the existing stable default branch until the owner separately authorises a documentation publication strategy.
 
